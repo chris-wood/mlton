@@ -34,6 +34,9 @@ structure RemoveUnused = RemoveUnused (S)
 structure SimplifyTypes = SimplifyTypes (S)
 structure Useless = Useless (S)
 
+(* NEW GVN-PRE OPTIMIZATION PASS *)
+structure GVNPRE = GVNPRE (S)
+
 type pass = {name: string,
              doit: Program.t -> Program.t}
 
@@ -86,6 +89,7 @@ val ssaPassesDefault =
    {name = "redundant", doit = Redundant.transform} ::
    {name = "knownCase", doit = KnownCase.transform} ::
    {name = "removeUnused4", doit = RemoveUnused.transform} ::
+   {name = "gvnpre", doit = GNVPRE.transform} ::
    nil
 
 val ssaPassesMinimal =
@@ -210,7 +214,9 @@ local
                  ("eliminateDeadBlocks",S.eliminateDeadBlocks),
                  ("orderFunctions",S.orderFunctions),
                  ("reverseFunctions",S.reverseFunctions),
-                 ("shrink", S.shrink)], 
+                 ("shrink", S.shrink),
+                 ("gvnpre", GVNPRE.transform)
+                 ], 
                 mkSimplePassGen))
 in
    fun ssaPassesSetCustom s =

@@ -25,22 +25,32 @@ fun transform (Program.T {globals, datatypes, functions, main}) =
            set = setLabelInfo, ...} =
          Property.getSetOnce (Label.plist,
                               Property.initRaise ("info", Label.layout))
+
+
       (* Keep track of variables used as overflow variables. *)
       val {get = overflowVar: Var.t -> bool, set = setOverflowVar, ...} =
          Property.getSetOnce (Var.plist, Property.initConst false)
+
+
       (* Keep track of the replacements of variables. *)
       val {get = replace: Var.t -> Var.t option, set = setReplace, ...} =
          Property.getSetOnce (Var.plist, Property.initConst NONE)
+
+
       (* Keep track of the variable that holds the length of arrays (and
        * vectors and strings).
        *)
       val {get = getLength: Var.t -> Var.t option, set = setLength, ...} =
          Property.getSetOnce (Var.plist, Property.initConst NONE)
+
+
       fun canonVar x =
          case replace x of
             NONE => x
           | SOME y => y
       fun canonVars xs = Vector.map (xs, canonVar)
+
+
       (* Canonicalize an Exp.
        * Replace vars with their replacements.
        * Put commutative arguments in canonical order.
@@ -97,6 +107,7 @@ fun transform (Program.T {globals, datatypes, functions, main}) =
           | Tuple xs => Tuple (canonVars xs)
           | Var x => Var (canonVar x)
           | _ => e
+          
 
       (* Keep a hash table of canonicalized Exps that are in scope. *)
       val table: {hash: word, exp: Exp.t, var: Var.t} HashSet.t =

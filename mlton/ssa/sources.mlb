@@ -91,6 +91,7 @@ local
    ssa2.fun
    ssa-to-ssa2.sig
    ssa-to-ssa2.fun
+   gvnpre.fun
 in
    signature HANDLER
    signature RETURN
