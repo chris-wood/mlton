@@ -84,12 +84,12 @@ val ssaPassesDefault =
    {name = "combineConversions", doit = CombineConversions.transform} ::
    {name = "commonArg", doit = CommonArg.transform} ::
    {name = "commonSubexp", doit = CommonSubexp.transform} ::
+   {name = "gvnpre", doit = GVNPRE.transform} ::
    {name = "commonBlock", doit = CommonBlock.transform} ::
    {name = "redundantTests", doit = RedundantTests.transform} ::
    {name = "redundant", doit = Redundant.transform} ::
    {name = "knownCase", doit = KnownCase.transform} ::
    {name = "removeUnused4", doit = RemoveUnused.transform} ::
-   {name = "gvnpre", doit = GNVPRE.transform} ::
    nil
 
 val ssaPassesMinimal =
@@ -193,6 +193,7 @@ local
                  ("commonArg", CommonArg.transform),
                  ("commonBlock", CommonBlock.transform),
                  ("commonSubexp", CommonSubexp.transform),
+                 ("gvnpre", GVNPRE.transform),
                  ("constantPropagation", ConstantPropagation.transform),
                  ("contify", Contify.transform),
                  ("dropProfile", Profile.dropProfile),
@@ -214,8 +215,7 @@ local
                  ("eliminateDeadBlocks",S.eliminateDeadBlocks),
                  ("orderFunctions",S.orderFunctions),
                  ("reverseFunctions",S.reverseFunctions),
-                 ("shrink", S.shrink),
-                 ("gvnpre", GVNPRE.transform)
+                 ("shrink", S.shrink)
                  ], 
                 mkSimplePassGen))
 in

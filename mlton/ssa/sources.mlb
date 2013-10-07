@@ -51,6 +51,7 @@ local
    common-arg.fun
    common-block.fun
    common-subexp.fun
+   gvnpre.fun
    global.sig
    global.fun
    multi.sig
@@ -91,7 +92,6 @@ local
    ssa2.fun
    ssa-to-ssa2.sig
    ssa-to-ssa2.fun
-   gvnpre.fun
 in
    signature HANDLER
    signature RETURN
