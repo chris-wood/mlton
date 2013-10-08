@@ -114,7 +114,34 @@ fun transform (Program.T {globals, datatypes, functions, main}) =
 	            end)
 	    val _ = diag "COMPILED"
 
-      	val functions = functions
+    (* Stub of function that walks the code blocks *)
+    fun doitTree tree =
+        let
+          val blocks = ref []
+        in
+          blocks
+        end
+
+    val functions =
+         List.revMap
+         (functions, fn f =>
+          let
+            (* Not sure... *)
+            val {args, blocks, mayInline, name, raises, returns, start} =
+                Function.dest f
+
+            (* Invoke the GVNPRE pass on each block of a function *)
+            val blocks = walkBlocks (Function.dominatorTree f)
+          in
+            (* Return a new function with the optimizations applied *)
+            Function.new {args = args,
+                           blocks = blocks,
+                           mayInline = mayInline,
+                           name = name,
+                           raises = raises,
+                           returns = returns,
+                           start = start}
+          end)
 
 		val program =
 		 Program.T {datatypes = datatypes,
