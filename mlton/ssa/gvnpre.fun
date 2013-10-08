@@ -114,13 +114,35 @@ fun transform (Program.T {globals, datatypes, functions, main}) =
 	            end)
 	    val _ = diag "COMPILED"
 
+    (*
+
+
+
+    fun pred (block) : block
+
+    fun succ (block) : block
+
+    fun lookup (expression) : value
+
+    fun phiTranslate(List[temporary]) : value
+
+    fun clean (set) : set
+
+    fun canonTemporaries (set) : set
+
+    fun canonExpression (set) : set
+
+    fun buildSets (tree, blocks) : List[(AVAIL_IN, AVAIL_OUT, ANTIC_IN, ANTIC_OUT, EXP_GEN, PHI_GEN, TMP_GEN)]
+    - Calculating BuildSets consists of two parts. 
+
+    1: The first is a top-down traversal of the dominator tree. At each block, we iterate forward over the instructions, making sure each expression has a value assigned to it. We also build EXP_GEN, PHI_GEN, TMP_GEN for that block
+    2: Calculate avail/antic sets using flow equations
+
+
+    *)
+
     (* Stub of function that walks the code blocks *)
-    fun doitTree tree =
-        let
-          val blocks = ref []
-        in
-          blocks
-        end
+    fun walkBlocks (tree, blocks) = blocks
 
     val functions =
          List.revMap
@@ -131,7 +153,7 @@ fun transform (Program.T {globals, datatypes, functions, main}) =
                 Function.dest f
 
             (* Invoke the GVNPRE pass on each block of a function *)
-            val blocks = walkBlocks (Function.dominatorTree f)
+            val blocks = walkBlocks (Function.dominatorTree f, blocks)
           in
             (* Return a new function with the optimizations applied *)
             Function.new {args = args,
